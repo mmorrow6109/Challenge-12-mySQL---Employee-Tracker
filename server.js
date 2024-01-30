@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const sequelize = require('../config/connection');
+const sequelize = require('./config/connection');
 
 sequelize.authenticate()
   .then(() => {
