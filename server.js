@@ -1,27 +1,12 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const sequelize = require('./config/connection');
-const db = require('./config/connection');
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'mySQLTweezer6109!',
-//     database: 'employees_db'
-//   });
 
-// setting up the function to authenticate the connection to the database
-function authenticateDatabase() {
-    sequelize.authenticate()
-        .then(() => {
-            console.log('Connection has been established successfully.');
-            viewEmployees(); // Call viewEmployees after the connection is established
-        })
-        .catch(err => {
-            console.error('Unable to connect to the database:', err);
-        });
-}
-// Actually calling the function.  Establishes a connection to the database. It uses the 'sequelize.authenticate()' method to authenticate the connection.
-authenticateDatabase();
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'mySQLTweezer6109!',
+    database: 'employees_db'
+});
 
 function viewEmployees() {
     const query = `
@@ -33,7 +18,8 @@ function viewEmployees() {
 
     db.query(query, (err, res) => {
         if (err) throw err;
-        console.table(res); // uses table view rather than logging the result to the console
+        console.table(res);
+        init();
     });
 }
 
@@ -275,11 +261,10 @@ function init () {
                 updateRole();
                 break;
             case 'Exit':
-                sequelize.end();
+                connection.end();
                 break;
         }
     })
 }
 
 init();
-
